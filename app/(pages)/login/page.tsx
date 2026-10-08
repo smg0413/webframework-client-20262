@@ -23,6 +23,7 @@ export default function LoginPage() {
     const setAccessToken = useAuthStore((state) => state.setAccessToken)
     const clearAccessToken = useAuthStore((state) => state.clearAccessToken)
 
+
     // const { accessToken, setAccessToken, clearAccessToken } = useAtuhStore<AuthState>((state) => stata)
 
     async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -71,7 +72,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center p=4">
+        <div className="flex items-center justify-center p=4">
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle> 로그인 </CardTitle>

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
 import { AuthStoreProvider } from "@/providers/auth-store-providers";
+import AppShell from "@/components/layout/AppShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,9 @@ export default function RootLayout(
     <html lang="ko">
       <body>
       <AuthStoreProvider>
-        {children}
+        <AppShell>
+          {children}
+        </AppShell>
       </AuthStoreProvider>
       </body>
     </html>
