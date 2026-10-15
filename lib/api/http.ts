@@ -8,7 +8,6 @@ export class ApiError extends Error {
     }
 }
 
-
 type ApiOptions = RequestInit & {
     accessToken?: string | null
 }

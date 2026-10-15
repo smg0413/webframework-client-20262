@@ -13,10 +13,20 @@ export type MeResponse = {
 export type LoginResponse = {
     accessToken: string
     tokenType: string
-    expiersIn: number
+    expiresIn: number
 }   
 
 export type LoginRequest = {
     email: string
     password: string
+}
+
+export type SignUpRequest = {
+    email: string
+    password: string
+    nickname: string
+}
+
+export type SignUpResponse = {
+    id: number
 }

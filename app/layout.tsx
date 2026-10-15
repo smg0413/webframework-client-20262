@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactNode } from "react";
 import { AuthStoreProvider } from "@/providers/auth-store-providers";
 import AppShell from "@/components/layout/AppShell";
+import { QueryProvider } from "@/providers/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +27,13 @@ export default function RootLayout(
   return (
     <html lang="ko">
       <body>
+        <QueryProvider>
       <AuthStoreProvider>
         <AppShell>
           {children}
         </AppShell>
       </AuthStoreProvider>
+      </QueryProvider>
       </body>
     </html>
   );

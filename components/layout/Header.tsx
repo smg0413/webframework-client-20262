@@ -3,9 +3,18 @@
 import { useAuthStore } from "@/providers/auth-store-providers"
 import Link from "next/link"
 import { Button, buttonVariants } from "../ui/button"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function Header() {
+    const queryClient = useQueryClient()
+    
     const { accessToken, isHydrated, clearAccessToken} = useAuthStore(state => state)
+    const handleLogout = async function() {
+        await queryClient.cancelQueries({queryKey: ["me"]})
+        queryClient.removeQueries({queryKey: ["me"]})
+
+        clearAccessToken()
+    }
 
     return (
         <header className="border-b bg-background">
@@ -18,7 +27,7 @@ export default function Header() {
                           accessToken? (
                            <>
                            <Link href="/me" className={buttonVariants()}> 내 정보</Link>
-                            <Button onClick={() => clearAccessToken()}>
+                            <Button onClick={handleLogout}>
                                 로그아웃
                             </Button>
                             </>

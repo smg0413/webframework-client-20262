@@ -6,24 +6,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/lib/api/user-account";
 import { useAuthStore } from "@/providers/auth-store-providers";
-
-
+import { useQueryClient } from "@tanstack/react-query";
 import { SubmitEvent, useState } from "react";
 
 type  LoginResponse = {
     accessToken: string
     tokenType: string
-    expiersIn: number
+    expiresIn: number
 }
 
 export default function LoginPage() {
+    const queryClient = useQueryClient()
+
     const [ isSubmitting, setIsSubmitting ] = useState(false)
     const [ errorMessage, setErrorMessage ] = useState("")
 
     const accessToken = useAuthStore((state) => state.accessToken)
     const setAccessToken = useAuthStore((state) => state.setAccessToken)
-    const clearAccessToken = useAuthStore((state) => state.clearAccessToken)
-
 
     // const { accessToken, setAccessToken, clearAccessToken } = useAtuhStore<AuthState>((state) => stata)
 
@@ -36,17 +35,18 @@ export default function LoginPage() {
         const email = String(formData.get("email") ?? "")
         const password = String(formData.get("password") ?? "")
 
-        
-
         setIsSubmitting(true)
         setErrorMessage("")
-        clearAccessToken()
 
         try {
             // login api 공통 함수로 구현
          
             const data: LoginResponse = await login({email, password})
-            setAccessToken(data.accessToken, data.expiersIn)
+
+            await queryClient.cancelQueries({queryKey: ["me"]})
+            queryClient.removeQueries({queryKey: ["me"]})
+
+            setAccessToken(data.accessToken, data.expiresIn)
 
             form.reset()
 
