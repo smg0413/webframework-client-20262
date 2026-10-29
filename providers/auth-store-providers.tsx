@@ -1,4 +1,5 @@
 "use client"
+import { connectAuthStore } from "@/lib/api/http";
 import { AuthState, createAuthStore } from "@/stores/auth-strore";
 // auth store를 하위 컴포넌트에 전달하고, useAuthStore()는 그 저장소에서 필요한 값을 읽는 함수
  
@@ -16,7 +17,12 @@ export function AuthStoreProvider({
   const [store] = useState(() => createAuthStore())
  
   useEffect(() => {
+    connectAuthStore(store)
     store.getState().restoreAccessToken()
+
+    return () => {
+      connectAuthStore(null)
+    }
   }, [ store ])
  
   return (

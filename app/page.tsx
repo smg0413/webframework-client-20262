@@ -1,13 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
+import { refresh } from "@/lib/api/user-account";
 import { useAuthStore } from "@/providers/auth-store-providers";
 
-import Link from "next/link";
-
 export default function Home() {
-  const accessToken = useAuthStore((state) => state.accessToken)
-  const clearAccessToken = useAuthStore((state) => state.clearAccessToken)
+  const setAccessToken = useAuthStore(state => state.setAccessToken)
 
   return (
       <div className="space-y-3">
@@ -15,6 +13,17 @@ export default function Home() {
         <p>
           Spring boot + next.js
         </p>
+        <div>
+          <Button 
+          onClick={async () => {
+            const data = await refresh()
+            console.log('data : ', data)
+            setAccessToken(data.accessToken, data.expiresIn)
+
+            console.log("새로운 accessToken 저장")
+          }}
+          > 리프레시 </Button>
+        </div>
       </div>
-  );
+  )
 }
