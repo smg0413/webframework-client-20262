@@ -34,6 +34,7 @@ function refreshAccessToekn(baseUrl: string): Promise<string> {
         return Promise.reject(new ApiError(401, "다시 로그인하세요."))
     }
 
+    
     // 갱신 중인 요청이 있으면 대기
     if(!refreshPromise) {
         refreshPromise = (async () => {
@@ -41,6 +42,8 @@ function refreshAccessToekn(baseUrl: string): Promise<string> {
                 method: "POST",
                 credentials: "include"
             })
+
+            console.log("response", response)
 
             const data: LoginResponse | null = response.ok? await response.json() : null
 
@@ -56,6 +59,7 @@ function refreshAccessToekn(baseUrl: string): Promise<string> {
 
                 throw new ApiError(response.status, "토큰 갱신에 실패했습니다.")
             }
+
 
             store.getState().setAccessToken(data.accessToken, data.expiresIn)
 
@@ -81,7 +85,6 @@ export default async function apiFetch(path: string, options: ApiOptions = {}): 
     const { accessToken, ...init } = options
     let token = accessToken 
 
-    const headers = new Headers(init.headers)
 
     if (accessToken && authStore) {
         token = authStore.getState().accessToken
@@ -95,25 +98,25 @@ export default async function apiFetch(path: string, options: ApiOptions = {}): 
         const headers = new Headers(init.headers)
 
         if (token) {
-            headers.set("Authorization", `Bearer ${accessToken}`)
+            headers.set("Authorization", `Bearer ${token}`)
         }
     
 
-    return fetch(`${baseUrl}${path}`, {
-        ...init,
-        headers,
-        credentials: init.credentials ?? "omit",
-        cache: init.cache
-    })
-}
+        return fetch(`${baseUrl}${path}`, {
+            ...init,
+            headers,
+            credentials: init.credentials ?? "omit",
+            cache: init.cache?? "no-store"
+        })
+    }
 
     let response = await request(token)
 
-    const canRefresh = Boolean(accessToken) && path !== "/user-account/login"&& path === "/user-account/refresh"
+    const canRefresh = Boolean(accessToken) && path !== "/user-account/login"&& path !== "/user-account/refresh"
 
     if(response.status === 401 && canRefresh) {
         init.signal?.throwIfAborted()
-
+    
         const newToken = await refreshAccessToekn(baseUrl)
 
         response = await request(newToken)
