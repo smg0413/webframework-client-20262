@@ -26,7 +26,8 @@ export default function Header() {
                         !isHydrated? <></> :(
                           accessToken? (
                            <>
-                           <Link href="/me" className={buttonVariants()}> 내 정보</Link>
+                           <Link href="/chat" className={buttonVariants({variant: "ghost"})}> 채팅 </Link>
+                           <Link href="/me" className={buttonVariants({variant: "ghost"})}> 내 정보 </Link>
                             <Button onClick={handleLogout}>
                                 로그아웃
                             </Button>

@@ -9,7 +9,8 @@ import { useAuthStore } from "@/providers/auth-store-providers"
 import Link from "next/link"
 import { useQuery } from "@tanstack/react-query"
 import { getMe } from "@/lib/api/user-account"
-import ChatBubble from "@/components/layout/ChatBubble"
+import { ChatMessage } from "@/components/chat/chatMessage"
+
 
 
 
@@ -130,11 +131,7 @@ export default function ChatPage() {
             <div ref={messageListRef} className="h-[600px] space-y-4 overflow-y-auto rounded-lg border p-4 bg-blue-50">
     {
         messages.map((message, i) => (
-            <ChatBubble
-                key={i}
-                message={message}
-                isMine={message.userAccountId === myId}
-            />
+            <ChatMessage key={i} message={message} isMine={message.userAccountId === myId}/>
         ))
     }
 </div>

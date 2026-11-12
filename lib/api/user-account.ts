@@ -1,5 +1,24 @@
-import { LoginRequest, LoginResponse, MeResponse, SignUpRequest, SignUpResponse } from "@/types/user";
+import { AvatarResponse, LoginRequest, LoginResponse, MeResponse, SignUpRequest, SignUpResponse } from "@/types/user";
 import apiFetch from "./http";
+import { json } from "stream/consumers";
+
+export async function updateAvatar(accessToken: string, avatarId: number): Promise<void> {
+    await apiFetch("/user-account/me/avatar", {
+        method: "PUT",
+        accessToken,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({avatarId})
+    })
+}
+
+export async function getAvatars(accessToken: string, signal? : AbortSignal): Promise<AvatarResponse[]> {
+    const response = await apiFetch("/user-account/avatars", {
+        accessToken, signal
+    })
+    return response.json()
+}
 
 export async function getMe(accessToken: string, signal? : AbortSignal): Promise<MeResponse> {
     const response = await apiFetch("/user-account/me", {
@@ -42,7 +61,7 @@ export async function signUp(request: SignUpRequest): Promise<SignUpResponse> {
     return response.json()
 }
 
-// 1. 기존 api가 accessToken이 만료되면 만료시간이 다 된 것으로 실패
+// 1. 기존 api가 accessToken이 만료되면 만료시간이 다   된 것으로 실패
 // 2. 만료 시간이 다 되면 자동으로 refresh api를 호출
 // 3. 새로운 accessToken을 저장. (기존 accessToken은 폐기)
 // 4. 실패했던 api를 새로운 accessToken으로 재실행

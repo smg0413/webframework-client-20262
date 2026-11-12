@@ -1,7 +1,14 @@
+export type AvatarResponse = {
+    id: number
+    src: string
+    bgColor: string
+}
+
 export type MeResponse = {
     id: number
     email: string
     nickname: string
+    avatar: AvatarResponse | null
 }
 
  export type MeResult = {
@@ -30,3 +37,4 @@ export type SignUpRequest = {
 export type SignUpResponse = {
     id: number
 }
+

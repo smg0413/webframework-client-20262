@@ -1,12 +1,13 @@
 import { ChatResponse } from "@/types/chat"
 import { formatTime } from "@/lib/formatTime"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-type ChatBubbleProps = {
+type ChatMessageProps = {
     message: ChatResponse
     isMine: boolean
 }
 
-export default function ChatBubble({ message, isMine }: ChatBubbleProps) {
+export function ChatMessage({ message, isMine }: ChatMessageProps) {
     if (isMine) {
         return (
             <div className="flex items-end justify-end gap-2">
@@ -20,7 +21,10 @@ export default function ChatBubble({ message, isMine }: ChatBubbleProps) {
 
     return (
         <div className="flex">
-            <div className="size-20 shrink-0 rounded-full bg-amber-200"></div>
+            <Avatar className="size-20 shrink-0" style={{ backgroundColor: message.avatar?.bgColor }}>
+                <AvatarImage src={message.avatar?.src} />
+                <AvatarFallback>{message.nickname.slice(0, 1)}</AvatarFallback>
+            </Avatar>
             <div className="min-w-0 pl-4">
                 <div className="text-sm"> {message.nickname} </div>
                 <div className="flex">
