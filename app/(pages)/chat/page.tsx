@@ -126,6 +126,25 @@ export default function ChatPage() {
 
     return (
         <div className="space-y-4">
+
+            <div className="bg-white-100 w-[200px] h-[calc(100%-64px)] fixed top-16 left-0 border rounded-r-xl p-4">
+                    <div className="font-semibold text-xl"> 채팅방 </div>
+                    <div className="pt-4">
+                        <div className="p-2 border-b">
+                            <div className="flex bg-red-100">
+                                <div className="flex-1 bg-amber-300"> 방제목 </div>
+                                <div> 시간 </div>
+                            </div>
+
+                        <div className="flex bg-blue-100">
+                                <div className="flex-1 bg-pink-300"> 메세지 내용 </div>
+                                <div> @! </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+            </div>
+
             <div className="text-2xl font-bold">채팅</div>
 
             <div ref={messageListRef} className="h-[600px] space-y-4 overflow-y-auto rounded-lg border p-4 bg-blue-50">
@@ -148,7 +167,6 @@ export default function ChatPage() {
                 ></Input>
                 <Button type="submit" disabled={!content.trim()} > 전송 </Button>
             </form>
-
         </div>
     )
 
